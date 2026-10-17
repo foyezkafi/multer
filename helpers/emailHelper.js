@@ -3,24 +3,22 @@ const { verifyEmailTemplate, resetPasswordTemplate } = require("../templates/ema
 
 const createTransporter = () => {
   return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: Number(process.env.EMAIL_PORT) || 587,
-    secure: Number(process.env.EMAIL_PORT) === 465,
+    service: process.env.SMTP_SERVICE,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
+      user: process.env.SMTP_NAME,
+      pass: process.env.SMTP_PASS,
     },
   })
 }
 
 const sendEmail = async ({ to, subject, html }) => {
-  if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error("Email credentials are missing. Set EMAIL_HOST, EMAIL_USER, and EMAIL_PASS in .env")
+  if (!process.env.SMTP_SERVICE || !process.env.SMTP_NAME || !process.env.SMTP_PASS) {
+    throw new Error("Email credentials are missing. Set SMTP_SERVICE, SMTP_NAME, and SMTP_PASS in .env")
   }
 
   const transporter = createTransporter()
   await transporter.sendMail({
-    from: process.env.EMAIL_FROM || `"ERP System" <${process.env.EMAIL_USER}>`,
+    from: `"ERP System" <${process.env.SMTP_NAME}>`,
     to,
     subject,
     html,
