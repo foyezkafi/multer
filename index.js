@@ -8,11 +8,12 @@ const PORT = process.env.PORT || 8000
 const dns = require("node:dns")
 
 
-dns.setServers(["8.8.8.8"], ["1.1.1.1"])
+dns.setServers(["8.8.8.8", "1.1.1.1"])
 
 app.use(cors())
 dbConnection()
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(routes);
 app.use('/uploads', express.static('uploads'));
 
@@ -23,5 +24,5 @@ app.get('/', function (req, res) {
 })
 
 app.listen(PORT, ()=>{
-  console.log(`server is running on  http://localhost${PORT}`)
+  console.log(`server is running on http://localhost:${PORT}`)
 })

@@ -1,44 +1,68 @@
 const mongoose = require("mongoose")
-const { required } = require("nodemon/lib/config")
-const {Schema} = mongoose
+const { Schema } = mongoose
 
-const userSchema = new Schema ({
+const userSchema = new Schema(
+  {
     username: {
-        type: String,
-        required: true,
-        trim: true
+      type: String,
+      required: true,
+      trim: true,
     },
     email: {
-        type: String,
-        unique: true,
-        trim: true,
-        required:true
-    }, 
+      type: String,
+      unique: true,
+      trim: true,
+      required: true,
+      lowercase: true,
+    },
     password: {
-        type: String,
-        trim: true,
-        required:true
+      type: String,
+      required: true,
+      select: false,
     },
     profilepicture: {
-        type: String,
+      type: String,
     },
     address: {
-        type: String,
+      type: String,
     },
     phone: {
-        type: String,
+      type: String,
     },
     gender: {
-        type: String,
-        enum: ["male","female","others"]
+      type: String,
+      enum: ["male", "female", "others"],
     },
     dob: {
-        type: String,
-    }
-
-},
-{timestamps: true})
-
+      type: String,
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false,
+    },
+    emailVerificationToken: {
+      type: String,
+      select: false,
+    },
+    emailVerificationExpires: {
+      type: Date,
+      select: false,
+    },
+    refreshToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+    },
+  },
+  { timestamps: true }
+)
 
 const userModel = mongoose.model("users", userSchema)
 
